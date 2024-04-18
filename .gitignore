@@ -1,0 +1,4 @@
+/venv
+/data
+/__pychache__
+wav2vec_small.pt
