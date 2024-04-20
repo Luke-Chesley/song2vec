@@ -201,3 +201,10 @@ class GumbelVectorQuantizer(nn.Module):
         result["x"] = x
 
         return result
+
+
+
+
+
+
+
