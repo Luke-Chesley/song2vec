@@ -1,14 +1,7 @@
+from transformers.configuration_utils import PretrainedConfig
+
 import functools
 import operator
-
-from transformers.configuration_utils import PretrainedConfig
-from transformers.utils import logging
-
-
-logger = logging.get_logger(__name__)
-
-
-
 
 class Wav2Vec2Config(PretrainedConfig):
     r"""
@@ -246,12 +239,7 @@ class Wav2Vec2Config(PretrainedConfig):
         adapter_attn_dim=None,
         **kwargs,
     ):
-        super().__init__(
-            **kwargs,
-            pad_token_id=pad_token_id,
-            bos_token_id=bos_token_id,
-            eos_token_id=eos_token_id,
-        )
+        super().__init__(**kwargs, pad_token_id=pad_token_id, bos_token_id=bos_token_id, eos_token_id=eos_token_id)
         self.hidden_size = hidden_size
         self.feat_extract_norm = feat_extract_norm
         self.feat_extract_activation = feat_extract_activation
