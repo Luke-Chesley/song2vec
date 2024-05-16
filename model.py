@@ -779,7 +779,7 @@ class Wav2Vec2ForPreTraining(Wav2Vec2PreTrainedModel):
 
 
 
-######################################## helper func ####################################333
+######################################## helper func #######################################
 
 def _compute_mask_indices(
     shape: Tuple[int, int],
@@ -898,3 +898,5 @@ def _compute_mask_indices(
     np.put_along_axis(spec_aug_mask, spec_aug_mask_idxs, 1, -1)
 
     return spec_aug_mask 
+
+
