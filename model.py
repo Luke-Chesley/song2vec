@@ -689,6 +689,7 @@ class Wav2Vec2ForPreTraining(Wav2Vec2PreTrainedModel):
         if mask_time_indices is not None:
             mask_time_indices = mask_time_indices.to(torch.bool)
 
+        #print('Pre model')
         outputs = self.wav2vec2(
             input_values,
             attention_mask=attention_mask,
@@ -774,6 +775,10 @@ class Wav2Vec2ForPreTraining(Wav2Vec2PreTrainedModel):
             contrastive_loss=contrastive_loss,
             diversity_loss=diversity_loss,
         )
+    
+    def params(self):
+        return sum(p.numel() for p in self.parameters() if p.requires_grad)
+
 
 
 
