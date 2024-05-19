@@ -780,6 +780,28 @@ class Wav2Vec2ForPreTraining(Wav2Vec2PreTrainedModel):
         return sum(p.numel() for p in self.parameters() if p.requires_grad)
 
 
+######################################## sequence_classification #######################################
+
+class Wav2Vec2ForSequenceClassification(nn.Module):
+    def __init__(self,model: Wav2Vec2ForPreTraining,num_labels):
+        super().__init__()
+
+        self.model = model.wav2vec2
+        self.num_labels = num_labels
+
+        self.classifier = nn.Linear(self.model.config.hidden_size,self.num_labels) 
+
+
+
+    def forward(self,x):
+        out = self.model(x)
+        last_hidden_state = out.last_hidden_state
+        pool = last_hidden_state.mean(dim=1)
+
+        logits = self.classifier(pool)
+
+
+        return logits
 
 
 
