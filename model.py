@@ -616,6 +616,10 @@ class Wav2Vec2Model(Wav2Vec2PreTrainedModel):
             hidden_states=encoder_outputs.hidden_states,
             attentions=encoder_outputs.attentions,
         )
+    
+    def params(self):
+        total_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        return f"{total_params:,}"
 
 
 
@@ -777,7 +781,8 @@ class Wav2Vec2ForPreTraining(Wav2Vec2PreTrainedModel):
         )
     
     def params(self):
-        return sum(p.numel() for p in self.parameters() if p.requires_grad)
+        total_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        return f"{total_params:,}"
 
 
 ######################################## sequence_classification #######################################
@@ -787,9 +792,13 @@ class Wav2Vec2ForSequenceClassification(nn.Module):
         super().__init__()
 
         self.model = model.wav2vec2
+
         self.num_labels = num_labels
 
         self.classifier = nn.Linear(self.model.config.hidden_size,self.num_labels) 
+
+        self.dropout = nn.Dropout(0.4)
+
 
 
 
@@ -798,10 +807,17 @@ class Wav2Vec2ForSequenceClassification(nn.Module):
         last_hidden_state = out.last_hidden_state
         pool = last_hidden_state.mean(dim=1)
 
+        pool = self.dropout(pool)
+
         logits = self.classifier(pool)
 
 
         return logits
+    
+
+    def params(self):
+        total_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        return f"{total_params:,}"
 
 
 

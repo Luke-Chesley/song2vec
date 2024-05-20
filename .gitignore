@@ -3,3 +3,5 @@
 __pycache__
 wav2vec_small.pt
 /weights
+/runs
+/finetune_weights
