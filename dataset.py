@@ -23,10 +23,10 @@ class AudioDataset(Dataset):
         label = self.extract_label(file_path)
         audio = self.pad_audio(audio)
         
-        return {'input_values':[audio],
+        return {'audio':audio,
                 #'file':file_path,
                 'sample_rate':sample_rate,
-                'label':self.label_2_id_dict[label]}
+                'label':torch.tensor(self.label_2_id_dict[label])}
 
     def resample_audio_torchaudio(self, file_path):
         waveform, sample_rate = torchaudio.load(file_path)
@@ -70,7 +70,7 @@ class AudioDataset(Dataset):
     
 
     def __repr__(self) -> str:
-        audio_length = len(self[0]['input_values'][0])
+        audio_length = len(self[0]['audio'])
         duration = audio_length / self.target_sample_rate
 
 
