@@ -192,7 +192,7 @@ class Wav2Vec2Config(PretrainedConfig):
         activation_dropout=0.1,
         attention_dropout=0.1,
         feat_proj_dropout=0.0,
-        feat_quantizer_dropout=0.0,
+        feat_quantizer_dropout=0.2, # default 0.0
         final_dropout=0.1,
         layerdrop=0.1,
         initializer_range=0.02,
@@ -207,7 +207,7 @@ class Wav2Vec2Config(PretrainedConfig):
         num_conv_pos_embedding_groups=16,
         do_stable_layer_norm=False,
         apply_spec_augment=True,
-        mask_time_prob=0.065,
+        mask_time_prob=0.3, # default 0.065
         mask_time_length=10,
         mask_time_min_masks=2,
         mask_feature_prob=0.0,
