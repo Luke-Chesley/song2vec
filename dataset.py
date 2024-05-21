@@ -4,6 +4,7 @@ import torchaudio
 import os
 import random
 from dataclasses import dataclass
+import numpy as np
 
 class AudioDataset(Dataset):
     def __init__(self, file_list, target_sample_rate=16000,max_length=80000):
@@ -23,6 +24,7 @@ class AudioDataset(Dataset):
         audio = self.pad_audio(audio)
         
         return {'input_values':[audio],
+                #'file':file_path,
                 'sample_rate':sample_rate,
                 'label':self.label_2_id_dict[label]}
 

@@ -183,10 +183,10 @@ class Wav2Vec2Config(PretrainedConfig):
     def __init__(
         self,
         vocab_size=32,
-        hidden_size=512, # default 768
+        hidden_size=768, # default 768
         num_hidden_layers=4,
         num_attention_heads=4,
-        intermediate_size=2048, # default 3072
+        intermediate_size=3072, # default 3072
         hidden_act="gelu",
         hidden_dropout=0.1,
         activation_dropout=0.1,
