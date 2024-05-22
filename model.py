@@ -107,6 +107,14 @@ class Wav2Vec2GumbelVectorQuantizer(nn.Module):
         self.codevectors = nn.Parameter(
             torch.FloatTensor(1, self.num_groups * self.num_vars, config.codevector_dim // self.num_groups)
         )
+
+        #init.xavier_uniform_(self.codevectors) 
+        #nn.init.kaiming_uniform_(self.codevectors, a=np.sqrt(6))
+        #nn.init.uniform_(self.codevectors, a=0.0, b=1.0)
+        nn.init.normal_(self.codevectors, mean=0.0, std=1.0)
+
+
+
         self.weight_proj = nn.Linear(config.conv_dim[-1], self.num_groups * self.num_vars)
         #print(self.weight_proj)
 
@@ -136,7 +144,7 @@ class Wav2Vec2GumbelVectorQuantizer(nn.Module):
        # print(hidden_states,hidden_states.shape)
         hidden_states = hidden_states.view(batch_size * sequence_length * self.num_groups, -1)
 
-        #print(hidden_states.float())
+      #  print(hidden_states.float())
 
 
         if self.training:
@@ -146,15 +154,15 @@ class Wav2Vec2GumbelVectorQuantizer(nn.Module):
                 hidden_states.float(), tau=self.temperature, hard=True
             ).type_as(hidden_states)
 
-            print(codevector_probs,codevector_probs.shape)
+           # print(codevector_probs,codevector_probs.shape)
 
             # compute perplexity
             codevector_soft_dist = torch.softmax(
                 hidden_states.view(batch_size * sequence_length, self.num_groups, -1).float(), dim=-1
             )
-            print(codevector_soft_dist,codevector_soft_dist.shape)
+           # print(codevector_soft_dist,codevector_soft_dist.shape)
             perplexity = self._compute_perplexity(codevector_soft_dist, mask_time_indices)
-            print(perplexity)
+          #  print(perplexity)
         else:
             # take argmax in non-differentiable way
             # comptute hard codevector distribution (one hot)
@@ -167,13 +175,15 @@ class Wav2Vec2GumbelVectorQuantizer(nn.Module):
             perplexity = self._compute_perplexity(codevector_probs, mask_time_indices)
 
         codevector_probs = codevector_probs.view(batch_size * sequence_length, -1)
-        print(codevector_probs,codevector_probs.shape)
+       # print(codevector_probs,codevector_probs.shape)
         # use probs to retrieve codevectors
         codevectors_per_group = codevector_probs.unsqueeze(-1) * self.codevectors
-        print(codevectors_per_group,codevectors_per_group.shape)
+      #  print(codevectors_per_group)
+     #   print(codevectors_per_group,codevectors_per_group.shape)
         codevectors = codevectors_per_group.view(batch_size * sequence_length, self.num_groups, self.num_vars, -1)
+       # print(codevectors)
         codevectors = codevectors.sum(-2).view(batch_size, sequence_length, -1)
-        print(codevectors)
+      #  print(codevectors)
         return codevectors, perplexity
     
 
@@ -761,7 +771,7 @@ class Wav2Vec2ForPreTraining(Wav2Vec2PreTrainedModel):
 
         quantized_features = self.project_q(quantized_features)
 
-        #print(quantized_features)
+       # print(quantized_features)
 
        # print(quantized_features.shape)
 
