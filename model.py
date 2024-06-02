@@ -94,8 +94,8 @@ class Wav2Vec2GumbelVectorQuantizer(nn.Module):
 
     def __init__(self, config):
         super().__init__()
-        self.num_groups = config.num_codevector_groups
-        self.num_vars = config.num_codevectors_per_group
+        self.num_groups = config.num_codevector_groups # 2
+        self.num_vars = config.num_codevectors_per_group # 320
 
         if config.codevector_dim % self.num_groups != 0:
             raise ValueError(
