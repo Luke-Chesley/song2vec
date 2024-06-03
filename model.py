@@ -1224,3 +1224,8 @@ class Wav2Vec2FeatureExtractor(SequenceFeatureExtractor):
             padded_inputs = padded_inputs.convert_to_tensors(return_tensors)
 
         return padded_inputs
+    
+
+    def params(self):
+        total_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        return f"{total_params:,}"
